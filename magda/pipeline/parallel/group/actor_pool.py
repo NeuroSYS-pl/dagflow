@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import List
+from typing import List, Optional, Callable
 
 from magda.pipeline.parallel.group.actor import Actor
 from magda.utils.logger import MagdaLogger
@@ -19,9 +19,9 @@ class ParallelActorPool:
     def replicas(self) -> int:
         return self._replicas
 
-    async def bootstrap(self, logger: MagdaLogger):
+    async def bootstrap(self, logger: MagdaLogger, hooks: Optional[List[Callable]] = None):
         await asyncio.gather(*[
-            actor.bootstrap.remote(logger)
+            actor.bootstrap.remote(logger, hooks)
             for actor in self._actors
         ])
 

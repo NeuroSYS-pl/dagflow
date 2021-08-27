@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from uuid import UUID
-from typing import List, Optional
+from typing import List, Optional, List, Callable
 
 import ray
 
@@ -28,13 +28,16 @@ class Actor:
         self.graph = Graph(modules)
         self._logger = None
 
-    async def bootstrap(self, logger: MagdaLogger):
+    async def bootstrap(self, logger: MagdaLogger, hooks: Optional[List[Callable]] = None):
         self._logger = logger.chain(
             group=MagdaLogger.Parts.Group(
                 name=self.name,
                 replica=self.index,
             ),
         )
+        if hooks:
+            for hook in hooks:
+                hook()
         await self.graph.bootstrap(self._logger)
 
     async def run(self, job_id: UUID, request, results=[], is_regular_runtime=True):

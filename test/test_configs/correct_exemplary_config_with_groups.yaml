@@ -1,0 +1,21 @@
+name: PipelineGroups
+modules:
+  - name: m1
+    type: ModuleSample
+    group: g1
+    depends_on:
+        - m2
+        - m3
+
+  - name: m2
+    type: DependingModule
+    group: g2
+
+  - name: m3
+    type: DependingModule
+    group: g3
+
+groups:
+  - name: g1
+    options:
+      replicas: 2

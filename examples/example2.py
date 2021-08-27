@@ -3,6 +3,7 @@ from time import time
 
 from magda.pipeline.parallel import init, ParallelPipeline
 from magda.utils.logger import MagdaLogger
+from magda.utils.logger.hooks import actor_logging_hook
 
 from examples.interfaces.common import Context, Request
 from examples.modules import *
@@ -21,9 +22,9 @@ class ExampleParallel:
     async def build(self, prefix: str = '{CTX}'):
         # The pipeline name is optional but we can directly set it to 'Example' here
         builder = ParallelPipeline(name='Example')
-        builder.add_group(ParallelPipeline.Group('g1'))
-        builder.add_group(ParallelPipeline.Group('g2'))
-        builder.add_group(ParallelPipeline.Group('g3'))
+        builder.add_group(ParallelPipeline.Group('g1', after_created=[actor_logging_hook]))
+        builder.add_group(ParallelPipeline.Group('g2', after_created=[actor_logging_hook]))
+        builder.add_group(ParallelPipeline.Group('g3', after_created=[actor_logging_hook]))
 
         builder.add_module(ModuleC('m1', group='g1'))
         builder.add_module(ModuleB('m2', group='g2'))
@@ -40,7 +41,7 @@ class ExampleParallel:
 
         self.pipeline = await builder.build(
             context=lambda: Context(prefix),
-            logger=MagdaLogger.Config(),
+            logger=MagdaLogger.Config(output=MagdaLogger.Config.Output.LOGGING),
         )
 
     async def run(self, value: str = 'R', n_jobs: int = 3):

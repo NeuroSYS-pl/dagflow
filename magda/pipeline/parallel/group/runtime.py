@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from uuid import UUID
-from typing import List, Iterable
+from typing import List, Iterable, Optional, Callable
 
 from magda.module.module import Module
 from magda.pipeline.parallel.group.actor import Actor
@@ -21,6 +21,7 @@ class GroupRuntime:
         dependent_modules_nonregular: List[Module],
         replicas: int = 1,
         state_type: StateType = True,
+        hooks: Optional[List[Callable]] = None,
         options={},
     ):
         self.name = name
@@ -40,6 +41,7 @@ class GroupRuntime:
             for i in range(replicas)
         ])
         self._logger = None
+        self._hooks = hooks
 
     @property
     def modules(self) -> List[Module]:
@@ -58,7 +60,7 @@ class GroupRuntime:
 
     async def bootstrap(self, logger: MagdaLogger):
         self._logger = logger.chain(group=MagdaLogger.Parts.Group(name=self.name))
-        await self.pool.bootstrap(self._logger)
+        await self.pool.bootstrap(self._logger, self._hooks)
 
     async def run(self, job_id: UUID, request, results, is_regular_runtime):
         return asyncio.ensure_future(

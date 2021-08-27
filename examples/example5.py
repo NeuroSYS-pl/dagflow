@@ -6,6 +6,7 @@ from magda import ConfigReader
 from magda.pipeline.parallel import init
 from magda.module.factory import ModuleFactory
 from magda.utils.logger.logger import MagdaLogger
+from magda.utils.logger.hooks import actor_logging_hook
 
 from examples.interfaces.common import Context, Request
 from examples.modules import *
@@ -38,7 +39,8 @@ class ExampleParallelConfigReader:
                 ModuleFactory,
                 config_parameters=config_params,
                 context=lambda: Context(prefix),
-                logger=MagdaLogger.Config(),
+                logger=MagdaLogger.Config(output=MagdaLogger.Config.Output.LOGGING),
+                after_created=[actor_logging_hook]
             )
 
     async def run(self, value: str = 'R', n_jobs: int = 3):
