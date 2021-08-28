@@ -1,0 +1,54 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #29a0cf;
+  --ifm-color-primary-dark: #2590ba;
+  --ifm-color-primary-darker: #2388b0;
+  --ifm-color-primary-darkest: #1d7091;
+  --ifm-color-primary-light: #39abd8;
+  --ifm-color-primary-lighter: #43afda;
+  --ifm-color-primary-lightest: #62bce0;
+  --ifm-code-font-size: 95%;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+html[data-theme='dark'] {
+  background-color: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #90d7f3;
+  --ifm-color-primary-dark: #6dcaef;
+  --ifm-color-primary-darker: #5cc4ed;
+  --ifm-color-primary-darkest: #27b1e8;
+  --ifm-color-primary-light: #b3e4f7;
+  --ifm-color-primary-lighter: #c4eaf9;
+  --ifm-color-primary-lightest: #f9fdfe;
+}
+
+html[data-theme='dark'] .docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+img.diagram {
+  display: block;
+  margin: auto;
+  border: transparent;
+  border-radius: 1rem;
+}
+
+svg.diagram {
+  display: block;
+  margin: auto;
+  height: auto;
+  margin-bottom: var(--ifm-leading);
+}
